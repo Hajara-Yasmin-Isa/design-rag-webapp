@@ -50,7 +50,7 @@ body {
   .side-panel {
     width: 0;
     overflow: hidden;
-    background: #fff;
+    background: #ad6969;
     border-left: 1px solid #ccc;
     transition: width 0.3s ease;
   }
