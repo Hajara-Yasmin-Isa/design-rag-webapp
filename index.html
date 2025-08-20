@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Design RAG Assistant</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Main Content Area -->
+    <div class="main-panel">
+      <div class="search-bar">
+        <input id="query" placeholder="Describe your design..." />
+        <button id="ask"><span class="icon">🔍</span></button>
+        <button id="clear">Clear</button>
+      </div>
+
+      <div class="results-nav">
+        <button id="prev">◀</button>
+        <div id="results" class="results"></div>
+        <button id="next">▶</button>
+      </div>
+    </div>
+
+    <!-- Side Panel -->
+    <div class="side-panel" id="sidePanel">
+      <div class="side-header">
+        <span class="icon">⚙️</span>
+      </div>
+
+      <div class="side-options">
+        <label><input type="checkbox" id="showAccessibility" /> Accessibility Tips</label>
+        <label><input type="checkbox" id="showExplanations" /> Show Rationale</label>
+        <button class="icon-btn" id="templatesBtn">📄 Templates</button>
+      </div>
+    </div>
+
+    <!-- Slider Handle -->
+    <div class="side-handle" id="sideHandle">⇔</div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

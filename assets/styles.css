@@ -1,0 +1,80 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background: #f9f9f9;
+  }
+  
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .main-panel {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .search-bar {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .search-bar input {
+    flex: 1;
+    padding: 5px;
+  }
+  
+  .results-nav {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .results {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+  }
+  
+  .card {
+    background: white;
+    border-radius: 6px;
+    padding: 5px;
+    min-width: 150px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+  }
+  
+  .side-panel {
+    width: 0;
+    overflow: hidden;
+    background: #fff;
+    border-left: 1px solid #ccc;
+    transition: width 0.3s ease;
+  }
+  
+  .side-panel.open {
+    width: 150px;
+    padding: 10px;
+  }
+  
+  .side-header {
+    text-align: center;
+    font-size: 20px;
+  }
+  
+  .side-options {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .side-handle {
+    width: 10px;
+    background: #ddd;
+    cursor: pointer;
+  }
+  
