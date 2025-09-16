@@ -35,11 +35,8 @@ async function parseCommand(query) {
   const data = await res.json();
   console.log("[app.js] Parsed JSON from Bedrock:", data);
 
-  // Support different formats (array, object, or nested in 'commands')
-  if (Array.isArray(data.commands)) return data.commands;
-  if (Array.isArray(data)) return data;
-  if (data.commands) return [data.commands];
-  return [data];
+  // Always return an array of commands
+  return Array.isArray(data.commands) ? data.commands : [data.commands];
 }
 
 // ====== Event handlers ======
@@ -57,7 +54,7 @@ askBtn.addEventListener("click", async () => {
     parent.postMessage(
       {
         pluginMessage: { type: "create-shape", payload: parsed },
-        pluginId: "*", // ✅ required for Figma
+        pluginId: "*",
       },
       "*"
     );

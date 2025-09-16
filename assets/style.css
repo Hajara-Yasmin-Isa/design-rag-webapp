@@ -50,7 +50,7 @@ body {
 }
 
 .search-bar input:focus {
-  border-color: #774ae2;
+  border-color: #91e24a;
   /*border-color: #4a90e2;*/
   box-shadow: 0 0 6px rgba(74, 144, 226, 0.3);
 }
@@ -59,7 +59,7 @@ body {
   padding: 10px 16px;
   border: none;
   border-radius: 12px;
-  background: #c44ae2;
+  background: #bce24a;
   /*background: #4588d4;*/
   color: white;
   font-size: 16px;
