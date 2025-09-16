@@ -113,16 +113,20 @@ askBtn.addEventListener("click", async () => {
 
     try {
       const parsed = await parseCommand(query);
+      console.log("Parsed command from Bedrock:", parsed);
+
+      // Normalize to array for safety
+      const parsedArray = Array.isArray(parsed) ? parsed : [parsed];
 
       // Send structured command to Figma plugin
       parent.postMessage(
         { pluginMessage: { type: "create-shape", payload: parsedArray } },
         "*"
-      );      
+      );
 
       resultsEl.textContent = `Created: ${JSON.stringify(parsed)}`;
     } catch (e) {
-      console.error(e);
+      console.error("Error in draw flow:", e);
       resultsEl.textContent = "Error: " + e.message;
     }
   } else {
@@ -134,7 +138,7 @@ askBtn.addEventListener("click", async () => {
       currentPage = 0;
       renderPage();
     } catch (e) {
-      console.error(e);
+      console.error("Error in RAG flow:", e);
       resultsEl.textContent = "Error: " + e.message;
     }
   }
