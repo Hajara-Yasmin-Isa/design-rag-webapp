@@ -102,34 +102,50 @@ async function parseCommand(query) {
   return data;
 }
 
+// ====== Call Bedrock via API Gateway ======
+async function parseCommand(query) {
+  console.log("[app.js] Sending to Bedrock:", query);
+
+  const res = await fetch(BEDROCK_API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt: query }),
+  });
+
+  console.log("[app.js] Bedrock raw response:", res);
+
+  if (!res.ok) throw new Error("Bedrock API request failed");
+
+  const data = await res.json();
+  console.log("[app.js] Parsed Bedrock JSON:", data);
+
+  // Expect data: { shape, color, width, height, text? }
+  return data;
+}
+
 // ====== Event handlers ======
 askBtn.addEventListener("click", async () => {
   const query = queryEl.value.trim();
   if (!query) return;
 
-  // Detect if it's a "draw command" vs a "search query"
   if (/create|make|add/i.test(query)) {
     resultsEl.textContent = "Generating on canvas…";
 
     try {
       const parsed = await parseCommand(query);
-      console.log("Parsed command from Bedrock:", parsed);
 
-      // Normalize to array for safety
-      const parsedArray = Array.isArray(parsed) ? parsed : [parsed];
+      console.log("[app.js] Sending postMessage to plugin:", parsed);
 
-      // Send structured command to Figma plugin
       parent.postMessage(
-        { pluginMessage: { type: "create-shape", payload: parsedArray } },
+        { pluginMessage: { type: "create-shape", payload: parsed } },
         "*"
       );
 
       resultsEl.textContent = `Created: ${JSON.stringify(parsed)}`;
     } catch (e) {
-      console.error("Error in draw flow:", e);
+      console.error("[app.js] ERROR:", e);
       resultsEl.textContent = "Error: " + e.message;
     }
-  } else {
     // Fallback: do a normal RAG search
     resultsEl.textContent = "Searching recommendations…";
 
