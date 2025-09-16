@@ -55,7 +55,10 @@ askBtn.addEventListener("click", async () => {
     console.log("[app.js] Sending postMessage to plugin:", parsed);
 
     parent.postMessage(
-      { pluginMessage: { type: "create-shape", payload: parsed } },
+      {
+        pluginMessage: { type: "create-shape", payload: parsed },
+        pluginId: "*", // ✅ required for Figma
+      },
       "*"
     );
 
