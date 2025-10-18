@@ -1,23 +1,25 @@
 document.getElementById("ask").addEventListener("click", () => {
   const query = document.getElementById("query").value.trim();
+
   if (!query) {
     alert("Please enter a request, e.g. 'Change the button color to green'");
     return;
   }
 
-  // Send message to Figma plugin
+  // Check if running inside Figma
   if (window.parent !== window) {
+    // Include pluginId in the message so Figma accepts it
     parent.postMessage(
-      { pluginMessage: { type: "nl-command", prompt: query } },
+      {
+        pluginMessage: { type: "nl-command", prompt: query },
+        pluginId: "*", // 👈 allow message to go to any Figma plugin (safe here)
+      },
       "*"
     );
+
     console.log("[Webapp] Sent message to Figma plugin:", query);
   } else {
     console.warn("Not running inside Figma — skipping postMessage.");
     alert("Open this app through your Figma plugin to send commands.");
   }
-});
-
-document.getElementById("clear").addEventListener("click", () => {
-  document.getElementById("query").value = "";
 });
