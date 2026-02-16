@@ -121,7 +121,7 @@ body {
   transform: translateY(-1px);
 }
 
-/* Example Chips (Level 2) */
+/* Example/Style Chips (Level 2 & 3) */
 .example-card {
   background: #fff;
   border: 1px solid #ddd;
@@ -144,6 +144,34 @@ body {
   color: #333;
   transform: translateY(-1px);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.example-card.selected {
+  background: #e6f7d9;
+  border-color: #91e24a;
+  color: #2c5900;
+  font-weight: 600;
+}
+
+/* Create Button */
+.create-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  text-align: center;
+}
+
+.create-btn:hover {
+  background: #357abd;
+  transform: translateY(-1px);
 }
 
 /* Back Button */
