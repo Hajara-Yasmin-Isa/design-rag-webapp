@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Design RAG Assistant</title>
   <link rel="stylesheet" href="assets/style.css" />
 </head>
+
 <body>
   <div class="container">
     <!-- Main Content Area -->
@@ -13,6 +15,11 @@
         <input id="query" placeholder="Describe your design..." />
         <button id="ask"><span class="icon">🔍</span></button>
         <button id="clear">Clear</button>
+      </div>
+
+      <!-- Suggestions Panel (Hidden by default) -->
+      <div id="suggestions" class="suggestions-panel hidden">
+        <!-- Cards will be injected by JS -->
       </div>
 
       <div class="results-nav">
@@ -41,29 +48,37 @@
 
   <div id="status" class="status-message"></div>
 
-<style>
-  .status-message {
-    margin-top: 10px;
-    font-size: 14px;
-    text-align: center;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  .status-message.visible {
-    opacity: 1;
-  }
-  .status-message.loading {
-    color: #007bff; /* Blue */
-  }
-  .status-message.success {
-    color: #28a745; /* Green */
-  }
-  .status-message.error {
-    color: #dc3545; /* Red */
-  }
-</style>
+  <style>
+    .status-message {
+      margin-top: 10px;
+      font-size: 14px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .status-message.visible {
+      opacity: 1;
+    }
+
+    .status-message.loading {
+      color: #007bff;
+      /* Blue */
+    }
+
+    .status-message.success {
+      color: #28a745;
+      /* Green */
+    }
+
+    .status-message.error {
+      color: #dc3545;
+      /* Red */
+    }
+  </style>
 
 
   <script src="assets/app.js"></script>
 </body>
+
 </html>
