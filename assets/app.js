@@ -6,23 +6,103 @@ document.getElementById("ask").addEventListener("click", () => {
     return;
   }
 
+  // Show Loading Status
+  const statusEl = document.getElementById("status");
+  if (statusEl) {
+    statusEl.textContent = "Generating 2 design prototypes...";
+    statusEl.className = "status-message visible loading";
+  }
+
+  // Simulate Generation Delay
+  setTimeout(() => {
+    generatePrototypes(query);
+    if (statusEl) {
+      statusEl.textContent = "Generated successfully!";
+      statusEl.className = "status-message visible success";
+      setTimeout(() => statusEl.classList.remove("visible"), 2500);
+    }
+  }, 1500);
+});
+
+function generatePrototypes(query) {
+  // We know valid IDs range from 0 to 11000 roughly based on earlier directory listing.
+  // We will pick 2 random IDs.
+  const chosenIds = [];
+  while (chosenIds.length < 2) {
+    const randomId = Math.floor(Math.random() * 11000);
+    // basic check avoiding exactly the same ID
+    if (!chosenIds.includes(randomId)) {
+      chosenIds.push(randomId);
+    }
+  }
+
+  const resultsDiv = document.getElementById("results");
+  if (resultsDiv) {
+    resultsDiv.innerHTML = "";
+    resultsDiv.style.display = "flex";
+    resultsDiv.style.gap = "20px";
+    resultsDiv.style.overflowX = "auto";
+
+    chosenIds.forEach(id => {
+      const card = document.createElement("div");
+      card.className = "prototype-card";
+      card.style.flex = "0 0 auto";
+      card.style.width = "300px";
+      card.style.border = "1px solid #ccc";
+      card.style.borderRadius = "8px";
+      card.style.padding = "10px";
+      card.style.backgroundColor = "#fff";
+      card.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
+
+      const img = document.createElement("img");
+      // Use relative path so browsers don't block the file:/// cross-origin request
+      img.src = `../llms-for-design/semantic_annotations/${id}.png`;
+      img.style.width = "100%";
+      img.style.height = "auto";
+      img.style.borderRadius = "4px";
+      img.style.objectFit = "cover";
+
+      // Error fallback just in case the random ID doesn't exist
+      img.onerror = function () {
+        this.onerror = null; // Prevent infinite loop
+        this.src = '../llms-for-design/semantic_annotations/0.png';
+      };
+
+      const title = document.createElement("div");
+      title.textContent = `Prototype #${id}`;
+      title.style.marginTop = "10px";
+      title.style.fontWeight = "bold";
+      title.style.textAlign = "center";
+
+      card.appendChild(img);
+      card.appendChild(title);
+      resultsDiv.appendChild(card);
+    });
+  }
+
   // Check if running inside Figma
   if (window.parent !== window) {
-    // Include pluginId in the message so Figma accepts it
-    parent.postMessage(
-      {
-        pluginMessage: { type: "nl-command", prompt: query },
-        pluginId: "*", // 👈 allow message to go to any Figma plugin (safe here)
-      },
-      "*"
-    );
+    // PREVIEW ONLY: Do not send the generation command to the Figma plugin.
+    // If we want generation later, change if (false) to if (true).
+    if (false) {
+      // Include pluginId in the message so Figma accepts it
+      parent.postMessage(
+        {
+          pluginMessage: { type: "nl-command", prompt: query, generatedIds: chosenIds },
+          pluginId: "*", // 👈 allow message to go to any Figma plugin (safe here)
+        },
+        "*"
+      );
 
-    console.log("[Webapp] Sent message to Figma plugin:", query);
+      console.log("[Webapp] Sent message to Figma plugin:", query);
+    } else {
+      console.log("[Webapp] Preview shown. Generation bypassed.");
+    }
   } else {
     console.warn("Not running inside Figma — skipping postMessage.");
-    alert("Open this app through your Figma plugin to send commands.");
   }
-});
+}
+
 
 // Suggestions Logic
 const suggestionsPanel = document.getElementById("suggestions");
@@ -256,7 +336,10 @@ function renderStyles(example) {
     // 3. Visual Feedback & Execute
     queryInput.value = finalPrompt;
     suggestionsPanel.classList.add("hidden");
-    submitPrompt(finalPrompt);
+
+    // Trigger the ask button click so generation happens consistently
+    document.getElementById("ask").click();
+
   });
 
   suggestionsPanel.appendChild(createBtn);
@@ -276,17 +359,8 @@ function updateCreateButton() {
 
 
 function submitPrompt(text) {
-  console.log("Submitting:", text);
-  // Send to Figma if in plugin mode, or just log/alert if standalone
-  if (window.parent && window.parent.postMessage) {
-    window.parent.postMessage(
-      {
-        pluginMessage: { type: "nl-command", prompt: text },
-        pluginId: "*", // or specific ID if known
-      },
-      "*"
-    );
-  }
+  console.log("Submitting directly via UI:", text);
+  // Optional legacy hook
 }
 
 // Render initially
